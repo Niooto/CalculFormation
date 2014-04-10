@@ -1,0 +1,807 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+    
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.js"></script>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+
+
+
+
+    <title>Calcul</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/home.do">Calcul coût formation</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <form action="pdf" method="GET">
+            <button type="submit">PDF</button>
+            <div class="col-md-9">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a data-toggle="tab" href="#home">Données communes</a></li>
+                    <li id="ajout-thematique" class=""><a data-toggle="" href="#"><button class="btn btn-primary">Ajout thématique</button></a></li>
+                </ul>
+                <br>
+                <div class="tab-content" id="myTabContent">
+                    <div id="home" class="tab-pane fade active in">
+                        <div class="row">
+
+
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Salle</h3>
+                                </div>
+                                <div class='panel-body'>
+                                    <div class="form-group">
+                                        <label>
+                                            Multi-site ?
+                                        </label>
+                                        <div class="checkbox">
+
+                                            <label class=".radio-inline">
+                                                <input name="multisite" id="m-site-on" value="on" type="radio"> Oui
+                                            </label>
+                                            <label class=".radio-inline">
+                                                <input name="multisite" id="m-site-off" value="off" type="radio" checked="checked"> Non
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="region ref" id="block-region1" data-id='1'>
+                                        <button  class="close closeRegion " type="button">×</button>
+                                        <fieldset class="">
+                                            <legend>Région</legend>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Région</label>
+                                                <input  type="text" name="ref-name-region" autocomplete='off' class="form-control ref-name-region"  placeholder="Région" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Prix moyen</label>
+                                                <div class="input-group">
+                                                    <input type="text" name="ref-prix-region" autocomplete='off' class="form-control ref-prix-region" readonly="readonly"  placeholder="Orix moyen"  value=""/>
+                                                    <span class="input-group-addon">€/m2</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Superficie</label>
+                                                <div class="input-group">
+                                                    <input type="text" autocomplete='off' name="ref-superficie-region" class="form-control ref-superficie-region" placeholder="Superficie"  value="">
+                                                    <span class="input-group-addon">m2</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div id="div-multi-site">
+                                        <div class=" ">
+                                            <div class="text-center" id="foot-m-site">
+                                                <button id="btn-ajout-region" class="btn btn-primary" disabled="disabled">Ajouter région</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Formateur</h3>
+                                </div>
+                                <div class='panel-body'>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Salaire</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="salaire-formateur" id="salaireFormateur" placeholder="Salaire moyen">
+                                            <span class="input-group-addon">€ / h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Apprenant</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Salaire moyen apprenant</label>
+                                        <div class="input-group">
+                                            <input class="form-control" name="salaire-apprenants" id="salaireApprenants" placeholder="Salaire moyen" type="number">
+                                            <span class="input-group-addon">€ / h</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='col-md-3'>
+                <div class="panel panel-primary" id="totals">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">TOTAL</h3>
+                    </div>
+                    <div class="tab-content list-group">
+                        <ul class="list-group text-center" >
+                            <li class="list-group-item">
+                                <strong>Coût Formateur</strong>
+                                <div class="text-danger" id="cout-global-formateur"> 0 €</div>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Coût Salles</strong>
+                                <div class="text-danger" id="cout-global-salle"> 0 €</div>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Coût apprenant</strong>
+                                <div class="text-danger" id="cout-global-apprenant"> 0 €</div>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Coût déplacement apprenants</strong>
+                                <div  class="text-danger" id="cout-global-d-apprenant">0 €</div>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Coût déplacement formateur</strong>
+                                <div class="text-danger" id="cout-global-d-formateur"> 0 €</div>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+            </form>
+        </div>
+
+
+        <!--
+            Block région pour thématique
+        -->
+        <div class="region-tab ref hidden disabled">
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><span class=" name-site"> </span>     
+                                <span class="pull-right">
+                                    <input class="c-thematique-region" type="checkbox" />
+                                </span></h3> 
+
+                            </div>
+                            <div class="panel-body">
+
+                                <div>
+                                    <div class="form-group">
+                                        <label >Nombre de sessions de formation par an</label>
+                                        <input name="nb-sessions" type="number" class="form-control nb-session"  placeholder="Nombre de sessions">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Personne par session</label>
+                                        <input name="nb-apprenant" type="number" class="form-control nb-apprenants" placeholder="Personne par session">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Déplacement Formateur ( <span class=" name-site"> </span> )</h3>
+                            </div>
+                            <div class='panel-body'>
+                                <div class="form-group">
+                                    <label>Trajet</label>
+                                    <div class="input-group">
+                                        <input name="trajet-formateur" type="text" class="form-control trajet-formateur deplacement" placeholder="Frais de trajet">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hébergement</label>
+                                    <div class="input-group">
+                                        <input name="hergement-formateur" type="text" class="form-control hergement-formateur deplacement" placeholder="Frais de hébergement">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Réstauration</label>
+                                    <div class="input-group">
+                                        <input name="restauration-formateur"  class="form-control restauration-formateur deplacement" placeholder="Frais de réstauration">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel-footer ">
+                                <label>Ratio</label>
+                                <div class="input-group">
+                                    <input name="ratio-formateur" class="form-control ratio-formateur deplacement" placeholder="Ratio">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Déplacement Apprenant ( <span class=" name-site"> </span> ) </h3>
+                            </div>
+                            <div class='panel-body'>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Trajet</label>
+                                    <div class="input-group">
+                                        <input name="trajet-apprenant" type="text" class="form-control trajet-apprenant deplacement" placeholder="Frais de trajet">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hébergement</label>
+                                    <div class="input-group">
+                                        <input name="hebergement-apprenant" type="text" class="form-control hebergement-apprenant deplacement"  placeholder="Frais de hébergement">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Réstauration</label>
+                                    <div class="input-group">
+                                        <input name="restauration-apprenant"  class="form-control restauration-apprenant deplacement" placeholder="Frais de réstauration">
+                                        <span class="input-group-addon">€</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel-footer ">
+                                <label>Ratio</label>
+                                <div class="input-group">
+                                    <input name="ratio-apprenant"  class="form-control ratio-apprenant deplacement" placeholder="Ratio">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <script>
+
+            var btnAjoutRegion = $("#btn-ajout-region");
+            var radioEnableMSite = $("#m-site-on");
+            var radioDisableMSite = $("#m-site-off");
+            var divRegionRef = $(".region.ref");
+            var divFootMSite = $("#foot-m-site");
+            var divMultiSite = $("#div-multi-site");
+            var btnCloseRegion = $(".closeRegion");
+            var refSuperficieRegion = $(".ref-superficie-region");
+
+            var inputsNomThematique = $(".i-nom-thematique");
+
+            var spanCoutFormateur = $("#cout-global-formateur");
+            var spanCoutApprenants = $("#cout-global-apprenant");
+            var spanCoutDeplacementApprenant = $("#cout-global-d-apprenant");
+            var spanCoutDeplacementFormateur = $("#cout-global-d-formateur");
+
+
+
+            var spanCoutSalles = $("#cout-global-salle");
+            var inputSalaireApprenants = $("#salaireApprenants");
+            var inputSalaireFormateur = $("#salaireFormateur");
+
+
+
+
+
+            var regionCount = 2;
+
+            var composeCount = 2;
+            $(function() {
+                $("#myTab").on("click", "a", function(e) {
+                    e.preventDefault();
+
+                    $(this).tab('show');
+                    $currentTab = $(this);
+                });
+
+                $(document).on("keyup", ".i-nom-thematique", function() {
+                    var id = $(this).closest(".tab-pane").attr("id");
+                    $(".a-tab[href='#" + id + "']").html($(this).val());
+                })
+
+                $("input[name='multisite']").change(function() {
+                    if ($(this).val() == 'on') {
+                        enableMultiSite();
+                    } else {
+                        if ($(this).val() == 'off') {
+                            disableMultiSite();
+                        }
+                    }
+                });
+
+                $(btnAjoutRegion).click(function(e) {
+                    ajoutRegion();
+                    e.preventDefault();
+                });
+
+                inputSalaireFormateur.keyup(function() {
+                    calculCoutFormateur();
+                });
+
+                inputSalaireFormateur.keyup(function() {
+                    calculCoutApprenants();
+                });
+
+
+                refSuperficieRegion.keyup(function(){
+                    calculCoutSalles();
+                })
+
+
+                $(document).on("keyup", ".deplacement", function() {
+                    calculCoutDéplacement();
+                })
+
+
+                $(document).on("keyup", ".i-nbheure-thematique", function() {
+                    calculCoutFormateur();
+                    calculCoutApprenants();
+                    calculCoutSalles();
+                    calculCoutDéplacement();
+                });
+
+
+
+                $(document).on("keyup", ".nb-session", function() {
+                    calculCoutFormateur();
+                    calculCoutApprenants();
+                    calculCoutSalles();
+                    calculCoutDéplacement();
+                });
+
+                $(document).on("keyup", ".nb-apprenants", function() {
+                    calculCoutFormateur();
+                    calculCoutApprenants();
+                    calculCoutDéplacement();
+                });
+
+
+
+
+                $("#salaireApprenants").keyup(function() {
+                    calculCoutApprenants();
+                });
+
+
+
+                $(document).on("click", ".closeRegion", function() {
+                    closeRegion($(this).closest(".region"));
+                    e.preventDefault();
+                });
+
+                //Répercute les changement d'une région sur toutes les thématiques
+                $(document).on("change", ".ref-name-region", function() {
+                    var that = $(this);
+
+                    var ref = $(this).closest(".region").attr("id");
+                    $("." + ref).each(function() {
+                        $(this).find(".name-site").html(that.val());
+                    });
+                });
+
+                $('.tooltip').tooltip();
+                ajoutTab();
+
+                $(document).on("change", ".c-thematique-region", function() {
+                    var block = $(this).closest(".region-tab");
+                    if ($(this).is(":checked")) {
+                        enableRegionThematique(block);
+                    } else {
+                        disableRegionThematique(block);
+                    }
+
+                    calculCoutDéplacement();
+
+                })
+
+
+                autocompleteRegion($(".region"));
+
+
+            })
+
+
+
+            // Ajout thématique ( tab bootstrap )
+            function ajoutTab() {
+                /* just for this demo */
+                $('#ajout-thematique').click(function(e) {
+                    e.preventDefault();
+                    var tabId = "thematique" + composeCount; //this is id on tab content div where the 
+                    composeCount = composeCount + 1; //increment compose count
+
+                    $('<li><a class="a-tab thematique-tab" href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>Thématique</a></li>').insertBefore('#ajout-thematique');
+                    $('#myTabContent').append('<div class="tab-pane tab-thematique" id="' + tabId + '"></div>');
+
+                    craeteNewTabAndLoadUrl("", "calcul-tab.html", "#" + tabId);
+                    var idRegion;
+                    $(this).tab('show');
+                    showTab(tabId);
+                    closeTab();
+
+                });
+            }
+
+
+            //Active une région dans une thématique
+            function enableRegionThematique(block) {
+                block.addClass("enabled");
+                block.removeClass("disabled");
+
+                calculCoutApprenants();
+                calculCoutFormateur();
+                calculCoutSalles();
+            }
+
+            //Désactive une région dans une thématique
+            function disableRegionThematique(block) {
+                block.addClass("disabled");
+                block.removeClass("enabled");
+
+                calculCoutApprenants();
+                calculCoutFormateur();
+                calculCoutSalles();
+            }
+
+
+            // Ajout la fonction autocomplete sur le champ région ( Salle ) de l'onglet données commune
+            function autocompleteRegion(block) {
+                block.find(".ref-name-region").autocomplete({
+                    minLength: 1,
+                    source: function(request, response) {
+                        $.ajax({
+                            url: "ville.surface.json",
+                            dataType: "json",
+                            data: {term: request.term},
+                            success: function(data) {
+                                var cat_data = $.map(data, function(item) {
+                                    return {
+                                        label: item.label,
+                                        value: item.value,
+                                        prix: item.prix
+                                    };
+                                });
+                                $(".ref-name-region").autocomplete({
+                                    delay: 0,
+                                    source: cat_data,
+                                    minlength: 1,
+                                    select: function(e, ui) {
+                                        var blockRegion = $(this).closest(".region");
+                                        blockRegion.find(".ref-prix-region").val(ui.item.prix);
+
+                                    },
+                                    change: function(event, ui) {
+                                        var blockRegion = $(this).closest(".region");
+                                        calculCoutSalles();
+                                        if (ui.item == null) {
+                                            blockRegion.find(".ref-prix-region").val("");
+                                        }
+                                    }
+                                });
+                            },
+                        });
+}
+});
+}
+
+
+            //Update la region ref dans toutes les thématiques
+            function updateRegionsThematique(ref) {
+                var blockRef = $("#" + ref);
+                var nom = blockRef.find(".ref-name-region").val();
+                $("." + ref).each(function() {
+                    $(this).find(".name-site").html(nom);
+                });
+            }
+
+            // Ajoute et met a jour les block région dans chaque thématique
+            function updateTabThematique(tab) {
+                var idRegion;
+                $(".region").each(function() {
+                    idRegion = "block-region" + $(this).data("id");
+                    ajoutRegionThematique(idRegion);
+                    updateRegionsThematique(idRegion);
+
+                });
+            }
+
+            function enableMultiSite() {
+                btnAjoutRegion.removeAttr("disabled");
+            }
+
+            function disableMultiSite() {
+                btnAjoutRegion.attr("disabled", "disabled");
+                divMultiSite.find(".region").each(function() {
+                    $("." + $(this).data("id"))
+                    $(this).remove();
+                })
+            }
+
+            // Ajout lors de l'ajout d'une région dans chaques thématiques
+            function ajoutRegionThematique(idRegion) {
+
+                $(".block-salle").each(function() {
+                    var block = $(".region-tab.ref").clone();
+                    block.addClass(idRegion);
+                    block.removeClass("ref");
+                    block.attr("data-idregion", idRegion);
+                    block.removeClass("hidden");
+                    if ($(this).find("." + idRegion).length == 0) {
+                        $(this).append(block);
+                    }
+                });
+            }
+
+            // Ajout région données communes
+            function ajoutRegion() {
+                var divRegion = divRegionRef.clone();
+                var idRegion = "block-region" + regionCount;
+                divRegion.removeClass("ref");
+
+                divRegion.attr("id", idRegion);
+                divRegion.attr("data-id", regionCount);
+                resetInputs(divRegion);
+
+                divRegion.insertBefore(divFootMSite);
+                autocompleteRegion($(".region:last"));
+                ajoutRegionThematique(idRegion);
+                regionCount++;
+            }
+            ;
+
+            // Fermeture thématique ( tab bootstrap )
+            function closeTab() {
+                $(".closeTab").click(function(e) {
+                    e.preventDefault();
+                    //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+                    var tabContentId = $(this).parent().attr("href");
+                    $(this).parent().parent().remove(); //remove li of tab
+                    $('#myTab a.thematique-tab:last').tab('show'); // Select first tab
+                    $(tabContentId).remove(); //remove respective tab content
+
+                });
+            }
+
+            function closeRegion(block) {
+                var idRegion = block.attr("id");
+                if (block.hasClass("ref")) {
+                    resetInputs(block);
+                    $("." + idRegion).each(function() {
+                        resetInputs($(this));
+                        updateRegionsThematique(idRegion);
+                    })
+                } else {
+                    block.remove();
+                    $("." + idRegion).each(function() {
+                        $(this).remove();
+                    })
+                }
+
+                calculCoutApprenants();
+                calculCoutFormateur();
+            }
+
+
+            function resetInputs(block) {
+                block.find(":input").not(':button, :submit, :reset')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+            }
+
+            // Charge page thématique
+            function craeteNewTabAndLoadUrl(parms, url, loadDivSelector) {
+
+                $("" + loadDivSelector).load(url, function(response, status, xhr) {
+                    if (status == "error") {
+                        var msg = "Sorry but there was an error getting details ! ";
+                        $("" + loadDivSelector).html(msg + xhr.status + " " + xhr.statusText);
+                        $("" + loadDivSelector).html("Load Ajax Content Here...");
+                    } else {
+                        updateTabThematique(loadDivSelector);
+                    }
+                });
+            }
+
+            function showTab(tabId) {
+                $('#myTab a[href="#' + tabId + '"]').tab('show');
+            }
+
+            function calculTempsFormation() {
+                var nbHeureFormation = 0;
+                $(".i-nbheure-thematique").each(function() {
+                    var dureeFormation = $(this).val();
+                    $(this).closest(".tab-thematique").find(".region-tab.enabled .nb-session").each(function() {
+                        nbHeureFormation += $(this).val() * dureeFormation;
+                    })
+                });
+
+                return nbHeureFormation | 0;
+            }
+
+
+            function calculNombreHeuresApprenants() {
+                var nbHeureFormation = 0;
+                $(".i-nbheure-thematique").each(function() {
+                    var dureeFormation = $(this).val();
+                    $(this).closest(".tab-thematique").find(".region-tab.enabled .nb-apprenants").each(function() {
+                        nbHeureFormation += $(this).val() * dureeFormation * $(this).closest(".region-tab").find(".nb-session").val();
+                    })
+                });
+                return nbHeureFormation;
+            }
+
+
+            function calculCoutFormateur() {
+                var nbHeureFormation = calculTempsFormation();
+                var salaireMoyen = inputSalaireFormateur.val() | 0;
+                var coutFormateur = 0;
+                coutFormateur = (salaireMoyen * nbHeureFormation) | 0;
+                displayCoutFormateur(coutFormateur);
+                
+                return coutFormateur;
+            }
+
+            function calculCoutSalles() {
+                var coutTotal = 0;
+                $(".tab-thematique").each(function() {
+                    var nbHeure = $(this).find(".i-nbheure-thematique").val();
+                    $(this).find(".region-tab.enabled").each(function() {
+                        var nbSession = $(this).find(".nb-session").val();
+                        var nbHeureTotal = nbHeure * nbSession;
+                        var idRegion = $(this).data("idregion");
+                        var blockRegion = $("#" + idRegion);
+                        var prix = parseFloat(blockRegion.find(".ref-prix-region").val().replace(/\s/g, ''));
+                        var superficie = parseFloat(blockRegion.find(".ref-superficie-region").val());
+
+                        coutTotal += ((prix * superficie) * ((nbSession / 30))) | 0;
+                    })
+                })
+
+                displayCoutSalle(coutTotal.toFixed(2));
+                return coutTotal.toFixed(2);
+            }
+
+            function calculCoutDéplacement() {
+                var totalDeplacementFormateur = 0;
+                var totalDeplacementApprenant = 0;
+                var totalDeplacement = 0
+
+                $(".tab-thematique").each(function() {
+                    var nbHeures = $(this).find(".i-nbheure-thematique").val();
+                    $(this).find(".region-tab.enabled").each(function() {
+                        var nbSession = $(this).find(".nb-session").val();
+                        var prixTrajetFormateurs = $(this).find(".trajet-formateur").val() | 0;
+                        var prixHebergementFormateur = $(this).find(".hergement-formateur").val() | 0;
+                        var prixRestaurationFormateur = $(this).find(".restauration-formateur").val() | 0;
+                        var ratioFormateur = $(this).find(".ratio-formateur").val() | 0;
+
+
+                        console.log("prixTrajetFormateurs ", prixTrajetFormateurs);
+                        console.log("prixHebergementFormateur ", prixHebergementFormateur);
+                        console.log("prixRestaurationFormateur ", prixRestaurationFormateur);
+                        console.log("ratioFormateur ", ratioFormateur);
+                        console.log("nbSession ", nbSession);
+
+                        totalDeplacementFormateur += ((prixTrajetFormateurs * nbSession) + (prixHebergementFormateur * (nbSession / 2)) + (nbHeures * nbSession / 7) * prixRestaurationFormateur) * (ratioFormateur / 100);
+
+                        console.log("totalDeplacementFormateur ", totalDeplacementFormateur);
+
+                        var prixTrajetApprenant = $(this).find(".trajet-apprenant").val() | 0;
+                        var prixHebergementApprenant = $(this).find(".hebergement-apprenant").val() | 0;
+                        var prixRestaurationApprenant = $(this).find(".restauration-apprenant").val() | 0;
+                        var ratioApprenant = $(this).find(".ratio-apprenant").val() | 0;
+                        var nbApprenants = $(this).find(".nb-apprenants").val() | 0;
+
+
+
+                        totalDeplacementApprenant += nbApprenants * ( (prixTrajetApprenant * nbSession) + (prixHebergementApprenant * (nbSession / 2)) + (nbHeures * nbSession / 7) * prixRestaurationApprenant) * (ratioApprenant / 100);
+
+                        console.log("totalDeplacementApprenant ", totalDeplacementApprenant.toFixed(2));
+                    })
+})
+
+
+displayDeplacementApprenant(totalDeplacementApprenant.toFixed(2));
+displayDeplacementFormateur(totalDeplacementFormateur.toFixed(2));
+
+totalDeplacement = totalDeplacementFormateur + totalDeplacementApprenant;
+console.log("TOTAL DEPLACEMENT ", totalDeplacement);
+return totalDeplacement;
+
+}
+
+
+function calculCoutApprenants() {
+    var nbHeureFormation = calculNombreHeuresApprenants();
+    var salaireMoyen = inputSalaireApprenants.val() | 0;
+    var coutApprenants = (nbHeureFormation * salaireMoyen) | 0;
+    displayCoutApprenant(coutApprenants);
+    return coutApprenants;
+}
+
+
+function animate (element, animation) {
+ element.addClass('animated ' + animation);
+                  //wait for animation to finish before removing classes
+                  window.setTimeout( function(){
+                    element.removeClass('animated ' + animation);
+                }, 2000);
+              }
+
+              function displayCoutFormateur(value){
+                var oldValue = parseFloat(spanCoutFormateur.html());
+                spanCoutFormateur.html(value + " €");
+                if(oldValue != value){
+                    animate(spanCoutFormateur,"pulse");
+
+                }
+            } 
+
+            function displayCoutSalle(value){
+                var oldValue = parseFloat(spanCoutSalles.html());
+                spanCoutSalles.html(value + " €");
+                if(oldValue != value){
+                    animate(spanCoutSalles,"pulse");
+                }
+            }
+
+            function displayCoutApprenant(value){
+                var oldValue = parseFloat(spanCoutApprenants.html());
+                spanCoutApprenants.html(value + " €");
+                if(oldValue != value){
+                    animate(spanCoutApprenants,"pulse");
+                }
+            }
+
+            function displayDeplacementApprenant(value){
+                var oldValue = parseFloat(spanCoutDeplacementApprenant.html());
+                spanCoutDeplacementApprenant.html(value + " €");
+                if(oldValue != value){
+                    animate(spanCoutDeplacementApprenant,"pulse");
+                }
+            }
+
+            function displayDeplacementFormateur(value){
+                var oldValue = parseFloat(spanCoutDeplacementFormateur.html());
+                spanCoutDeplacementFormateur.html(value + " €");
+                if(oldValue != value){
+                    animate(spanCoutDeplacementFormateur,"pulse");
+                }
+            }
+
+
+
+        </script>
+    </body>
+    </html>

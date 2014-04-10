@@ -1,0 +1,11 @@
+{
+    "name": "mon-app",
+    "version": "0.1.0",
+	  "main": "index.html",
+    "dependencies": {
+		"express" : "3.5.1"
+    },
+	"window": {
+   "toolbar": false
+	}
+}
